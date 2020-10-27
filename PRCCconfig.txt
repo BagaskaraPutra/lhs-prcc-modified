@@ -1,0 +1,18 @@
+[param]:
+%paramName=[min, baseline, max]
+s=[1e-2, 10, 50] %[0 0 0]
+muT=[1e-4, 2e-2, 0.2]
+r=[1e-3, 0.03, 50]
+k1=[1e-7, 2.4e-5, 1e-3]
+k2=[1e-5, 3e-3, 1e-2]
+mub=[1e-1, 0.24 , 0.4]
+N=[1, 1200, 2e3]
+muV=[1e-1, 2.4, 1e1]
+dummy=[1, 1, 1e1]
+%Tmax=[1500, 1500, 1500] %remove if all values are the same
+
+[state]: %initial value
+T0=1e3
+T1=0
+T2=0
+V=1e-3

@@ -1,0 +1,16 @@
+[allStateName]:
+T0
+T1
+T2
+V
+[paramName]:
+s
+muT
+r
+k1
+k2
+mub
+N
+muV
+dummy
+%Tmax
