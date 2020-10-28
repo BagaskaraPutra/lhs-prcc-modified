@@ -5,8 +5,10 @@ This is a Matlab/Octave script for (Latin Hypercube Sampling-Partial Rank Correl
 1. **Model_LHS.m** (Main file): 
 A more concise initialization of parameters, variables, and function calling. PRCC.m and PRCC_PLOT.m are called.
 The significant parameters and their values are displayed in the Command Window.
+![Image of Output Results](https://github.com/BagaskaraPutra/lhs-prcc-modified/blob/master/figures/outputFigure.PNG)
 1. **config.txt**: Contains parameter & and state variable names for easier indexing and calling.
 1. **PRCCconfig.txt**: Contains parameter (minimum, baseline, maximum) and initial state values.
+![Image of Config Contents](https://github.com/BagaskaraPutra/lhs-prcc-modified/blob/master/figures/configContents.PNG)
 1. **ODE_LHS.m**: ODE function with parameter & variable indexing from config.txt
 1. **loadModel.m**: Function to load model from config.txt
 1. **loadPRCCconfig.m**: Function to load from PRCCconfig.txt
