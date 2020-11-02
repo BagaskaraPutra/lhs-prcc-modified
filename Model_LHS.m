@@ -8,7 +8,6 @@ runs=100;
 %% [EDITABLE] Load Model Parameters and Variables
 analyzeThisOutput = 'V'; % Chosen output variable name to do PRCC analysis
 
-model.name = 'HIV';
 model.dir = ['lhs-prcc-modified']; %directory of ODE model and config
 model = loadModel(model);
 model = loadPRCCconfig(model,'lhs-prcc-modified/PRCCconfig.txt'); %contains config for PRCC min,baseline,max,initial

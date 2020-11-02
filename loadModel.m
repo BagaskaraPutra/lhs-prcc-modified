@@ -1,5 +1,7 @@
 function model = loadModel(model)
 file = importdata([model.dir '/config.txt']); %[EDITABLE] if you change the config file name
+cd(model.dir)
+model.dir = pwd;
 ignoreChar = '%'; %[EDITABLE] if you change the ignore or comment header type
 headerStartChar = '['; headerEndChar = ']:'; %[EDITABLE] if you change the config header format
 
@@ -26,6 +28,9 @@ for hIdx=1:numel(headerIndex)
         if(~isempty(focusedHeaderFile{fIdx}))
             model.(headerName){fIdx} = focusedHeaderFile{fIdx};
         end
+    end
+    if(numel(model.(headerName)) == 1)
+        model.(headerName) = model.(headerName){1};
     end
 end
 
