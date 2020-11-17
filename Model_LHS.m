@@ -13,10 +13,10 @@ model = loadModel(model);
 model = loadPRCCconfig(model,'lhs-prcc-modified/PRCCconfig.txt'); %contains config for PRCC min,baseline,max,initial
 
 % Parameter Labels 
-PRCC_var={'s', '\mu_T', 'r', 'k_1','k_2', '\mu_b','N_V', '\mu_V','dummy'};
+PRCC_var = model.paramLabel; %{'s', '\mu_T', 'r', 'k_1','k_2', '\mu_b','N_V', '\mu_V','dummy'};
 
 % Variable Labels
-y_var_label={'T','T*','T**','V'};
+y_var_label = model.yVarLabel; %{'T','T*','T**','V'};
 
 %% [EDITABLE] TIME SPAN OF THE SIMULATION
 t_end=4000; % length of the simulations
@@ -62,9 +62,10 @@ for x=1:runs %Run solution x times choosing different values
     end
 end
 %% Save the workspace
-save Model_LHS.mat;
+% save Model_LHS.mat;
+save(['PRCCofOutputVar_' model.analyzeThisOutput '.mat']);
 % CALCULATE PRCC
-alpha = 0.01; %0.05; %threshold for significant PRCCs (uncorrelated < alpha)
+alpha = 0.001; %0.05; %threshold for significant PRCCs (uncorrelated < alpha)
 [prcc sign sign_label]=PRCC(LHSmatrix,model,time_points,PRCC_var,alpha);
 % https://www.mathworks.com/matlabcentral/answers/376781-too-many-input-arguments-error
 
