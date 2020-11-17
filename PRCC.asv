@@ -84,7 +84,7 @@ for r=1:length(s)
         prccSortedValue(sortIdx) = prcc(r,prccSortedIdx(sortIdx));
         prccSortedParamName{sortIdx} = model.paramName{prccSortedIdx(sortIdx)};
         prccSorted_var{sortIdx} = PRCC_var{prccSortedIdx(sortIdx)};
-        fprintf('%s: %f',prccSortedParamName{sortIdx}, prccSortedValue(sortIdx));
+        fprintf('%s: %f',prccSortedParamName{sortIdx} ,prccSortedValue(sortIdx));
         for signIdx=1:numel(sign_label.index{r})
             if(prccSortedIdx(sortIdx) == sign_label.index{r}(signIdx))
                 fprintf(' (significant)');

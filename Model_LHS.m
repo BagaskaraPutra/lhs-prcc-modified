@@ -6,9 +6,9 @@ clear all; close all;
 runs=100;
 
 %% [EDITABLE] Load Model Parameters and Variables
-analyzeThisOutput = 'V'; % Chosen output variable name to do PRCC analysis
+model.analyzeThisOutput = 'V'; % Chosen output variable name to do PRCC analysis
 
-model.dir = ['lhs-prcc-modified']; %directory of ODE model and config
+model.dir = pwd; %directory of ODE model and config
 model = loadModel(model);
 model = loadPRCCconfig(model,'lhs-prcc-modified/PRCCconfig.txt'); %contains config for PRCC min,baseline,max,initial
 
@@ -65,24 +65,8 @@ end
 save Model_LHS.mat;
 % CALCULATE PRCC
 alpha = 0.01; %0.05; %threshold for significant PRCCs (uncorrelated < alpha)
-[prcc sign sign_label]=PRCC(LHSmatrix,model.state.(analyzeThisOutput).lhs,1:length(time_points),PRCC_var,alpha);
+[prcc sign sign_label]=PRCC(LHSmatrix,model,time_points,PRCC_var,alpha);
 % https://www.mathworks.com/matlabcentral/answers/376781-too-many-input-arguments-error
 
-% print all prcc parameters sorted from most to least significant
-for tpIdx=1:numel(time_points)
-    [prccSortedValue, prccSortedIdx] = sort(abs(prcc(tpIdx,:)),'descend'); 
-    fprintf('%d. TimePoint: %d\n',tpIdx,time_points(tpIdx));
-    for sortIdx=1:numel(prccSortedIdx)
-        fprintf('%s: %f',model.paramName{prccSortedIdx(sortIdx)},prcc(tpIdx,prccSortedIdx(sortIdx)));
-        for signIdx=1:numel(sign_label.index{tpIdx})
-            if(prccSortedIdx(sortIdx) == sign_label.index{tpIdx}(signIdx))
-                fprintf(' (significant)');
-            end
-        end
-        fprintf('\n');
-    end
-    fprintf('\n');
-end
-
 % PRCC_PLOT(X,Y,s,PRCC_var,y_var)
-PRCC_PLOT(LHSmatrix,model.state.(analyzeThisOutput).lhs,length(time_points),PRCC_var,y_var_label)
+PRCC_PLOT(LHSmatrix, model.state.(model.analyzeThisOutput).lhs, length(time_points), PRCC_var, model.analyzeThisOutput)
