@@ -12,6 +12,7 @@ model.dir = pwd; %directory of ODE model and config
 model = loadModel(model);
 model = loadPRCCconfig(model,'lhs-prcc-modified/PRCCconfig.txt'); %contains config for PRCC min,baseline,max,initial
 
+alpha = 0.001; %0.05; %threshold for significant PRCCs (uncorrelated < alpha)
 % Parameter Labels 
 PRCC_var = model.paramLabel; %{'s', '\mu_T', 'r', 'k_1','k_2', '\mu_b','N_V', '\mu_V','dummy'};
 
@@ -19,9 +20,9 @@ PRCC_var = model.paramLabel; %{'s', '\mu_T', 'r', 'k_1','k_2', '\mu_b','N_V', '\
 y_var_label = model.yVarLabel; %{'T','T*','T**','V'};
 
 %% [EDITABLE] TIME SPAN OF THE SIMULATION
-t_end=4000; % length of the simulations
-tspan=(0:1:t_end);   % time points where the output is calculated
-time_points=[2000 4000]; % time points of interest for the US analysis
+t_end = 4000; % length of the simulations
+tspan = (0:1:t_end);   % time points where the output is calculated
+time_points = [2000 4000]; % time points of interest for the US analysis
 
 %% [EDITABLE] INITIAL CONDITION FOR THE ODE MODEL
 %  Change the values in the PRCCconfig.txt
@@ -63,11 +64,34 @@ for x=1:runs %Run solution x times choosing different values
 end
 %% Save the workspace
 % save Model_LHS.mat;
-save(['PRCCofOutputVar_' model.analyzeThisOutput '.mat']);
 % CALCULATE PRCC
-alpha = 0.001; %0.05; %threshold for significant PRCCs (uncorrelated < alpha)
-[prcc sign sign_label]=PRCC(LHSmatrix,model,time_points,PRCC_var,alpha);
+[prcc sign sign_label hFig] = PRCC(LHSmatrix,model,time_points,PRCC_var,alpha);
 % https://www.mathworks.com/matlabcentral/answers/376781-too-many-input-arguments-error
 
 % PRCC_PLOT(X,Y,s,PRCC_var,y_var)
-PRCC_PLOT(LHSmatrix, model.state.(model.analyzeThisOutput).lhs, length(time_points), PRCC_var, model.analyzeThisOutput)
+% PRCC_PLOT(LHSmatrix, model.state.(model.analyzeThisOutput).lhs, length(time_points), PRCC_var, model.analyzeThisOutput)
+
+prompt = 'Do you want to save all variables and figures? If yes, Enter [Y]. If not enter random: ';
+savePrompt = input(prompt, 's');
+if(savePrompt == 'Y' || savePrompt == 'y')
+    nowVector = clock();
+    for tIdx=1:5
+        nowCell{tIdx} = num2str(nowVector(tIdx));
+    end
+    timeString = strjoin(nowCell,'-');
+    saveDir = ['results/' 'variable_' model.analyzeThisOutput '/' timeString];
+    mkdir(saveDir);
+    save([saveDir '/PRCCofOutputVar_' model.analyzeThisOutput '.mat'],'-regexp','^(?!(hFig)$).');
+    fprintf(['MAT file saved in ' saveDir '\n']);
+    saveDir = ['results/' 'variable_' model.analyzeThisOutput '/' timeString '/figures'];
+    mkdir(saveDir);
+    for hfIdx=1:numel(hFig)
+        for tpIdx=1:numel(hFig{hfIdx}.figure)
+            saveas(hFig{hfIdx}.figure{tpIdx},[saveDir '/' hFig{hfIdx}.name num2str(tpIdx) '.png']);
+            saveas(hFig{hfIdx}.figure{tpIdx},[saveDir '/' hFig{hfIdx}.name num2str(tpIdx) '.fig']);
+        end
+    end
+    fprintf(['Figures saved in ' saveDir '\n']);
+else
+    disp('Figure not saved. If you still want to save, please save them manually.');
+end

@@ -11,7 +11,7 @@
 % modified by Bagaskara P P, November 17 2020
 % plot sorted parameters from most to least significant 
 
-function [prcc,sign,sign_label]=PRCC(LHSmatrix,model,time_points,PRCC_var,alpha);
+function [prcc,sign,sign_label,hFig]=PRCC(LHSmatrix,model,time_points,PRCC_var,alpha)
 s = 1:length(time_points); % index for time points
 Y = model.state.(model.analyzeThisOutput).lhs; % desired analyzed output LHS
 Y=Y(s,:)';% Define the output. Comment out if the Y is already 
@@ -59,9 +59,9 @@ sign=uncorrected_sign;
 sign_label=struct;
 sign_label.uncorrected_sign=uncorrected_sign;
 
-%figure
 for r=1:length(s)
-    figure();
+    hFig{1}.name = 'unsortedPRCC';
+    hFig{1}.figure{r} =  figure();
 %     c1=['PRCCs at time = ' num2str(s(r))];
     c1=['PRCCs at time point: ' num2str(time_points(r))];
     a=find(uncorrected_sign(r,:)<alpha);
@@ -94,7 +94,8 @@ for r=1:length(s)
     end
     fprintf('\n');
 
-   figure();
+    hFig{2}.name = 'sortedPRCC';
+    hFig{2}.figure{r} =  figure();
     bar(prccSortedValue); title(['Most to Least Significant ' c1]);
         set(gca,'XTickLabel',prccSorted_var,'XTick',[1:k]);
 end
