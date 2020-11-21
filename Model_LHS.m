@@ -79,16 +79,36 @@ if(savePrompt == 'Y' || savePrompt == 'y')
         nowCell{tIdx} = num2str(nowVector(tIdx));
     end
     timeString = strjoin(nowCell,'-');
-    saveDir = ['results/' 'variable_' model.analyzeThisOutput '/' timeString];
-    mkdir(saveDir);
+    saveDir = ['results/' 'variable_' model.analyzeThisOutput '/' timeString]; mkdir(saveDir);
     save([saveDir '/PRCCofOutputVar_' model.analyzeThisOutput '.mat'],'-regexp','^(?!(hFig)$).');
     fprintf(['MAT file saved in ' saveDir '\n']);
+    saveDir = ['results/' 'variable_' model.analyzeThisOutput '/' timeString '/tables']; mkdir(saveDir);
+    for tpIdx=1:numel(time_points)
+        fid=fopen([saveDir '/unsortedPRCC' num2str(tpIdx) '_' num2str(time_points(tpIdx)) '.csv'],'w');
+        for parIdx=1:numel(model.paramName)
+           if(parIdx == numel(model.paramName))
+               break;
+           else
+               fprintf(fid,model.paramName{parIdx}); fprintf(fid, ',');
+           end
+        end
+        fprintf(fid,'\n');
+        for parIdx=1:numel(model.paramName) 
+           if(parIdx == numel(model.paramName))
+               break;
+           else
+               fprintf(fid,'%.4f',prcc(parIdx)); fprintf(fid, ',');
+           end
+        end
+        fclose(fid);
+    end
+    fprintf(['Tables saved in ' saveDir '\n']);
     saveDir = ['results/' 'variable_' model.analyzeThisOutput '/' timeString '/figures'];
     mkdir(saveDir);
     for hfIdx=1:numel(hFig)
         for tpIdx=1:numel(hFig{hfIdx}.figure)
-            saveas(hFig{hfIdx}.figure{tpIdx},[saveDir '/' hFig{hfIdx}.name num2str(tpIdx) '.png']);
-            saveas(hFig{hfIdx}.figure{tpIdx},[saveDir '/' hFig{hfIdx}.name num2str(tpIdx) '.fig']);
+            saveas(hFig{hfIdx}.figure{tpIdx},[saveDir '/' hFig{hfIdx}.name num2str(tpIdx) '_' num2str(time_points(tpIdx)) '.png']);
+            saveas(hFig{hfIdx}.figure{tpIdx},[saveDir '/' hFig{hfIdx}.name num2str(tpIdx) '_' num2str(time_points(tpIdx)) '.fig']);
         end
     end
     fprintf(['Figures saved in ' saveDir '\n']);
