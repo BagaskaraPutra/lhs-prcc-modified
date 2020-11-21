@@ -86,18 +86,20 @@ if(savePrompt == 'Y' || savePrompt == 'y')
     for tpIdx=1:numel(time_points)
         fid=fopen([saveDir '/unsortedPRCC' num2str(tpIdx) '_' num2str(time_points(tpIdx)) '.csv'],'w');
         for parIdx=1:numel(model.paramName)
+           fprintf(fid,model.paramName{parIdx});
            if(parIdx == numel(model.paramName))
                break;
            else
-               fprintf(fid,model.paramName{parIdx}); fprintf(fid, ',');
+               fprintf(fid, ',');
            end
         end
         fprintf(fid,'\n');
         for parIdx=1:numel(model.paramName) 
+           fprintf(fid,'%.4f',prcc(parIdx)); 
            if(parIdx == numel(model.paramName))
                break;
            else
-               fprintf(fid,'%.4f',prcc(parIdx)); fprintf(fid, ',');
+               fprintf(fid, ',');
            end
         end
         fclose(fid);
