@@ -96,16 +96,9 @@ for r=1:length(s)
 
     hFig{2}.name = 'sortedPRCC';
     hFig{2}.figure{r} =  figure();
-    switch orientation
-        case 'horizontal'
-            barh(prccSortedValue); title(['Most to Least Significant ' c1]);
-            xlabel('PRCC values');
-            set(gca,'YTickLabel',prccSorted_var,'YTick',[1:k]);
-        otherwise
-            bar(prccSortedValue); title(['Most to Least Significant ' c1]);
-            ylabel('PRCC values');
-            set(gca,'XTickLabel',prccSorted_var,'XTick',[1:k]);
-    end
+    if(orientation == 'horizontal'
+    bar(prccSortedValue); title(['Most to Least Significant ' c1]);
+        set(gca,'XTickLabel',prccSorted_var,'XTick',[1:k]);
 end
 
 end

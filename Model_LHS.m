@@ -65,7 +65,7 @@ end
 %% Save the workspace
 % save Model_LHS.mat;
 % CALCULATE PRCC
-[prcc sign sign_label hFig] = PRCC(LHSmatrix,model,time_points,PRCC_var,alpha);
+[prcc sign sign_label hFig] = PRCC(LHSmatrix,model,time_points,PRCC_var,alpha,'horizontal'); %'vertical');
 % https://www.mathworks.com/matlabcentral/answers/376781-too-many-input-arguments-error
 
 % PRCC_PLOT(X,Y,s,PRCC_var,y_var)
