@@ -95,7 +95,7 @@ if(savePrompt == 'Y' || savePrompt == 'y')
         end
         fprintf(fid,'\n');
         for parIdx=1:numel(model.paramName) 
-           fprintf(fid,'%.4f',prcc(parIdx)); 
+           fprintf(fid,'%.4f',prcc(tpIdx,parIdx)); 
            if(parIdx == numel(model.paramName))
                break;
            else
